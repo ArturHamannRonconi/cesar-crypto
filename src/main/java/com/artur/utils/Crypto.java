@@ -1,31 +1,42 @@
 package com.artur.utils;
 
+import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
+import java.util.function.IntFunction;
+
 public class Crypto {
     private Crypto() {  }
 
     public static String encode(String text) {
-        var builder = new StringBuilder();
+        IntFunction<Character> intToChars =
+        intCharacter -> (char) (intCharacter + 4);
 
-        for(byte i = 0; i < text.length(); i++) {
-            var num = (int) text.charAt(i);
-            var caractere = (char) (num + 4);
+        BiFunction<StringBuilder, Character, StringBuilder> concatenate =
+            (stringBuilder, character) -> stringBuilder.append(character);
 
-            builder.append(caractere);
-        }
+        BinaryOperator<StringBuilder> create =
+            (str1, str2) -> str1.append(str2);
 
-        return builder.toString();
+        return text.chars()
+            .mapToObj(intToChars)
+            .reduce(new StringBuilder(), concatenate, create)
+            .toString();
     }
 
     public static String decode(String code) {
-        var builder = new StringBuilder();
+        IntFunction<Character> intToChars =
+        intCharacter -> (char) (intCharacter - 4);
 
-        for(byte i = 0; i < code.length(); i++) {
-            var num = (int) code.charAt(i);
-            var caractere = (char) (num - 4);
+        BiFunction<StringBuilder, Character, StringBuilder> concatenate =
+            (stringBuilder, character) -> stringBuilder.append(character);
 
-            builder.append(caractere);
-        }
+        BinaryOperator<StringBuilder> create =
+            (str1, str2) -> str1.append(str2);
 
-        return builder.toString();
+        return code.chars()
+            .mapToObj(intToChars)
+            .reduce(new StringBuilder(), concatenate, create)
+            .toString();
+
     }
 }

@@ -8,6 +8,7 @@ public final class App {
         var text = Crypto.decode(code);
 
         System.out.println(code);
+        System.out.println(text);
     }
 
     public static void main(String[] args) {
